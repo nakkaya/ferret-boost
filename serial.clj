@@ -40,12 +40,15 @@
 
 (defnative read-line [[port-ptr]]
   (on "defined FERRET_STD_LIB"
+      ("boost/algorithm/string.hpp")
       "boost::asio::serial_port & port = port_ptr.cast<Pointer>()->reference<boost::asio::serial_port>();
        boost::asio::streambuf b;
        std::ostringstream line;
        try { boost::asio::read_until(port, b, \"\\r\\n\"); } catch(const std::exception& e) { return nil(); }
        line << &b;
-       __result = obj<String>(line.str().c_str());"))
+       std::string ret_val = line.str();
+       boost::replace_all(ret_val,\"\\r\\n\", \"\");
+       __result = obj<String>(ret_val.c_str());"))
 
 (defnative close [[port io]]
   (on "defined FERRET_STD_LIB"
