@@ -48,7 +48,7 @@
        line << &b;
        std::string ret_val = line.str();
        boost::replace_all(ret_val,\"\\r\\n\", \"\");
-       __result = obj<String>(ret_val.c_str());"))
+       __result = obj<String>(ret_val);"))
 
 (defnative close [[port io]]
   (on "defined FERRET_STD_LIB"
