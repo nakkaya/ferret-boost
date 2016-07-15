@@ -14,4 +14,5 @@
        }
        std::ostringstream buf;
        write_json (buf, pt, false);
-       __result = obj<String>(buf.str());"))
+       std::string json = buf.str();
+       __result = obj<String>(json.c_str(), (json.length() - 1));"))
