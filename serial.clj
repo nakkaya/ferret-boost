@@ -2,7 +2,7 @@
   (data "boost::asio::io_service io;"
         "boost::asio::serial_port port;")
   (equals "return obj<Boolean>(this == o.cast<SerialState>());")
-  (stream_console "fprintf(FERRET_OUTPUT_STREAM, \"SerialState\"); return nil();")
+  (stream_console "fprintf(FERRET_STD_OUT, \"SerialState\"); return nil();")
   (fns
    ("explicit SerialState() : port(io) { }")
    ("boost::asio::serial_port& serial_port() { return port;}")
