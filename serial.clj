@@ -22,7 +22,7 @@
        boost::asio::serial_port_base::stop_bits STOP( boost::asio::serial_port_base::stop_bits::one );
 
        try { 
-         __result.cast<SerialState>()->serial_port().open(p.cast<String>()->to_string()); 
+         __result.cast<SerialState>()->serial_port().open(p.to<std::string>()); 
        } catch(const std::exception& e) { 
          return nil(); 
        }
