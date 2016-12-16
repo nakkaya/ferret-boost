@@ -10,7 +10,7 @@
        for(size_t i = 0; i < size; i+=2){
           var key = runtime::nth(col, i);
           var val = runtime::nth(col, i+1);
-          pt.put (key.cast<String>()->to_string(), val.cast<String>()->to_string());
+          pt.put (key.to<std::string>(), val.to<std::string>());
        }
        std::ostringstream buf;
        write_json (buf, pt, false);
