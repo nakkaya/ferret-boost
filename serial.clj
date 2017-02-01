@@ -1,8 +1,8 @@
 (defobject SerialState
   (data "boost::asio::io_service io;"
         "boost::asio::serial_port port;")
-  (equals "return obj<Boolean>(this == o.cast<SerialState>());")
-  (stream_console "fprintf(FERRET_STD_OUT, \"SerialState\"); return nil();")
+  (equals "return obj<boolean>(this == o.cast<SerialState>());")
+  (stream_console "runtime::print(\"SerialState\"); return nil();")
   (fns
    ("explicit SerialState() : port(io) { }")
    ("boost::asio::serial_port& serial_port() { return port;}")
@@ -16,13 +16,13 @@
       "__result  = obj<SerialState>();
 
        // Base serial settings
-       boost::asio::serial_port_base::baud_rate BAUD(b.cast<Number>()->as<int>());
+       boost::asio::serial_port_base::baud_rate BAUD(number::to<int>(b));
        boost::asio::serial_port_base::flow_control FLOW( boost::asio::serial_port_base::flow_control::none );
        boost::asio::serial_port_base::parity PARITY( boost::asio::serial_port_base::parity::none );
        boost::asio::serial_port_base::stop_bits STOP( boost::asio::serial_port_base::stop_bits::one );
 
        try { 
-         __result.cast<SerialState>()->serial_port().open(p.to<std::string>()); 
+         __result.cast<SerialState>()->serial_port().open(string::to<std::string>(p)); 
        } catch(const std::exception& e) { 
          return nil(); 
        }
@@ -36,7 +36,7 @@
 (defnative write [conn byte]
   (on "defined FERRET_STD_LIB"
       "boost::asio::serial_port& port = conn.cast<SerialState>()->serial_port();
-       unsigned char ch = byte.cast<Number>()->as<int>();
+       unsigned char ch = number::to<int>(byte);
        try { boost::asio::write(port, boost::asio::buffer(&ch, 1)); } 
        catch(const std::exception& e) { return nil(); }
        __result = byte;"))
@@ -46,7 +46,7 @@
       "boost::asio::serial_port& port = conn.cast<SerialState>()->serial_port();
        unsigned char ch;
        try { boost::asio::read(port, boost::asio::buffer(&ch, 1)); } catch(const std::exception& e) { return nil(); }
-       __result = obj<Number>((ferret::number_t)ch);"))
+       __result = obj<number>(ch);"))
 
 (defnative read-line [conn]
   (on "defined FERRET_STD_LIB"
@@ -58,7 +58,7 @@
        line << &b;
        std::string ret_val = line.str();
        boost::replace_all(ret_val,\"\\r\\n\", \"\");
-       __result = obj<String>(ret_val);"))
+       __result = obj<string>(ret_val);"))
 
 (defnative close [[port io]]
   (on "defined FERRET_STD_LIB"

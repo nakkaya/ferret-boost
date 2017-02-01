@@ -10,9 +10,9 @@
        for(size_t i = 0; i < size; i+=2){
           var key = runtime::nth(col, i);
           var val = runtime::nth(col, i+1);
-          pt.put (key.to<std::string>(), val.to<std::string>());
+          pt.put (string::to<std::string>(key), string::to<std::string>(val));
        }
        std::ostringstream buf;
        write_json (buf, pt, false);
        std::string json = buf.str();
-       __result = obj<String>(json.c_str(), (json.length() - 1));"))
+       __result = obj<string>(json.c_str(), (json.length() - 1));"))
