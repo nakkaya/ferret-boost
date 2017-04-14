@@ -1,3 +1,6 @@
+(native-header "boost/asio/serial_port.hpp"
+               "boost/asio.hpp")
+
 (defobject SerialState
   (data "boost::asio::io_service io;"
         "boost::asio::serial_port port;")
@@ -11,8 +14,6 @@
 
 (defnative open [p b]
   (on "defined FERRET_STD_LIB"
-      ("boost/asio/serial_port.hpp"
-       "boost/asio.hpp")
       "__result  = obj<SerialState>();
 
        // Base serial settings
