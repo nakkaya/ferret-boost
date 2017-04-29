@@ -23,3 +23,13 @@
        std::string left = boost::trim_left_copy(val);
        std::string right = boost::trim_right_copy(left);
        __result = obj<string>(right);"))
+
+(defn concat
+  ([] "")
+  ([x] x)
+  ([h v]
+   "std::string _h = string::to<std::string>(h);
+    std::string _v = string::to<std::string>(v);
+   __result = obj<string>((_h + _v));")
+  ([x y & more]
+   (reduce concat (concat x y) more)))
