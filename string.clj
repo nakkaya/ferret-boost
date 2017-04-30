@@ -33,3 +33,8 @@
    __result = obj<string>((_h + _v));")
   ([x y & more]
    (reduce concat (concat x y) more)))
+
+(defn contains? [s x]
+  "std::size_t found = string::to<std::string>(s).find(string::to<std::string>(x));
+   if (found != std::string::npos)
+     __result = obj<boolean>(true)")
