@@ -1,20 +1,11 @@
 (native-header "boost/asio/serial_port.hpp"
                "boost/asio.hpp")
 
-(defobject SerialState
-  (data "boost::asio::io_service io;"
-        "boost::asio::serial_port port;")
-  (equals "return obj<boolean>(this == o.cast<SerialState>());")
-  (stream_console "runtime::print(\"SerialState\"); return nil();")
-  (fns
-   ("explicit SerialState() : port(io) { }")
-   ("boost::asio::serial_port& serial_port() { return port;}")
-   ("boost::asio::io_service& io_service() { return io;}"))
-  (force-type))
+(defobject serial_o "ferret-boost/serial_o.h")
 
 (defnative open [p b]
   (on "defined FERRET_STD_LIB"
-      "__result  = obj<SerialState>();
+      "__result  = obj<serial_o>();
 
        // Base serial settings
        boost::asio::serial_port_base::baud_rate BAUD(number::to<int>(b));
@@ -23,20 +14,20 @@
        boost::asio::serial_port_base::stop_bits STOP( boost::asio::serial_port_base::stop_bits::one );
 
        try { 
-         __result.cast<SerialState>()->serial_port().open(string::to<std::string>(p)); 
+         __result.cast<serial_o>()->serial_port().open(string::to<std::string>(p)); 
        } catch(const std::exception& e) { 
          return nil(); 
        }
 
        // Setup port - base settings
-       __result.cast<SerialState>()->serial_port().set_option( BAUD );
-       __result.cast<SerialState>()->serial_port().set_option( FLOW );
-       __result.cast<SerialState>()->serial_port().set_option( PARITY );
-       __result.cast<SerialState>()->serial_port().set_option( STOP );"))
+       __result.cast<serial_o>()->serial_port().set_option( BAUD );
+       __result.cast<serial_o>()->serial_port().set_option( FLOW );
+       __result.cast<serial_o>()->serial_port().set_option( PARITY );
+       __result.cast<serial_o>()->serial_port().set_option( STOP );"))
 
 (defnative write [conn byte]
   (on "defined FERRET_STD_LIB"
-      "boost::asio::serial_port& port = conn.cast<SerialState>()->serial_port();
+      "boost::asio::serial_port& port = conn.cast<serial_o>()->serial_port();
        unsigned char ch = number::to<int>(byte);
        try { boost::asio::write(port, boost::asio::buffer(&ch, 1)); } 
        catch(const std::exception& e) { return nil(); }
@@ -44,7 +35,7 @@
 
 (defnative read [conn]
   (on "defined FERRET_STD_LIB"
-      "boost::asio::serial_port& port = conn.cast<SerialState>()->serial_port();
+      "boost::asio::serial_port& port = conn.cast<serial_o>()->serial_port();
        unsigned char ch;
        try { boost::asio::read(port, boost::asio::buffer(&ch, 1)); } catch(const std::exception& e) { return nil(); }
        __result = obj<number>(ch);"))
@@ -52,7 +43,7 @@
 (defnative read-line [conn]
   (on "defined FERRET_STD_LIB"
       ("boost/algorithm/string.hpp")
-      "boost::asio::serial_port& port = conn.cast<SerialState>()->serial_port();
+      "boost::asio::serial_port& port = conn.cast<serial_o>()->serial_port();
        boost::asio::streambuf b;
        std::ostringstream line;
        try { boost::asio::read_until(port, b, \"\\r\\n\"); } catch(const std::exception& e) { return nil(); }
@@ -63,9 +54,9 @@
 
 (defnative close [[port io]]
   (on "defined FERRET_STD_LIB"
-      "boost::asio::serial_port& port = conn.cast<SerialState>()->serial_port();
+      "boost::asio::serial_port& port = conn.cast<serial_o>()->serial_port();
        port.cancel();
        port.close();
-       boost::asio::io_service& io = conn.cast<SerialState>()->io_service();
+       boost::asio::io_service& io = conn.cast<serial_o>()->io_service();
        io.stop();
        io.reset();"))
