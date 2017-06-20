@@ -5,14 +5,13 @@ class serial_o : public object_t {
  public:
   size_t type() const { return runtime::type::serial_o; }
 
-  bool equals(var o) const {
+  bool equals(var const & o) const {
     return obj<boolean>(this == o.cast<serial_o>());
   }
 
 #if !defined(FERRET_DISABLE_STD_OUT)
-  var stream_console() const {
+  void stream_console() const {
     runtime::print("serial_o");
-    return nil();
   }
 #endif
 

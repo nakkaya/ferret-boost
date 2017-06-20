@@ -52,7 +52,7 @@
        boost::replace_all(ret_val,\"\\r\\n\", \"\");
        __result = obj<string>(ret_val);"))
 
-(defnative close [[port io]]
+(defnative close [conn]
   (on "defined FERRET_STD_LIB"
       "boost::asio::serial_port& port = conn.cast<serial_o>()->serial_port();
        port.cancel();
