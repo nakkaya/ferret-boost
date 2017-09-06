@@ -1,4 +1,4 @@
-class serial_o : public object_t {
+class serial_o : public object {
   boost::asio::io_service io;
   boost::asio::serial_port port;
 
