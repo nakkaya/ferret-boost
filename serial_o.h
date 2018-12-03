@@ -3,11 +3,8 @@ class serial_o : public object {
   boost::asio::serial_port port;
 
  public:
-  size_t type() const { return runtime::type::serial_o; }
 
-  bool equals(var const & o) const {
-    return obj<boolean>(this == o.cast<serial_o>());
-  }
+  type_t type() const final { return type_id<serial_o>; }
 
 #if !defined(FERRET_DISABLE_STD_OUT)
   void stream_console() const {
